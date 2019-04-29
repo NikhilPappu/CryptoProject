@@ -7,8 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import yao.Utils;
-import yao.gate.*; 
+import gate.*; 
 
 
 public class Client
@@ -126,7 +125,16 @@ public class Client
             else if (Utils.getHex(ra).equals(ra1)){
                 System.out.print("1");
             }
+        
             
+		    // KeyPair kp = Utils.genRSAkeyPair();
+            // byte[] secret=new byte[]{0x12,0x34,0x56,0x78};
+            // byte[] cipher=Utils.RSAencrypt(secret, kp.getPublic());
+            // System.out.println("RSA encrypted="+Utils.getHex(cipher));
+            // secret=Utils.RSAdecrypt(cipher, kp.getPrivate());
+            // System.out.println("RSA decrypted="+Utils.getHex(secret));
+
+
         }
         catch (Exception exception)
         {

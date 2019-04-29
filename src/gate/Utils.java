@@ -1,4 +1,4 @@
-package yao;
+package gate;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -10,8 +10,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import yao.gate.Gate;
 
 public class Utils 
 {
@@ -171,13 +169,11 @@ public class Utils
 				md.reset();
 				md.update(in_a1);
 				md.update(in_a2);
-		        // md.update( int ) processes only the low order 8-bits. It actually expects an unsigned byte.
 		        md.digest();
 		        
 		        md.reset();
 				md.update(in_a1);
 				md.update(in_a2);
-		        // md.update( int ) processes only the low order 8-bits. It actually expects an unsigned byte.
 		        md.digest();
 			}
 		}

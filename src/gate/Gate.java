@@ -1,8 +1,6 @@
-package yao.gate;
+package gate;
 
 import java.util.Random;
-
-import yao.Utils;
 
 public class Gate 
 {
@@ -40,43 +38,6 @@ public class Gate
 		return null;
 	}
 	
-	/*
-	 * generate an encrypted lookup-table
-	 * ==================================
-	 * 
-	 * i-wires are inputs, r-wire is the result
-	 * 
-	 * the table consists of entries that hold output values taken
-	 * from the r-wire values. this function can generate arbitrary
-	 * function tables, just call with 0's and 1's according to the
-	 * following table and the function picks the corresponding
-	 * wire ciphers
-	 * 
-	 * LUT  | i1.0   i1.1 
-	 * -------------------
-	 * i2.0 | 0:i00  1:i01
-	 *      |
-	 * i2.1 | 2:i10  3:i11
-	 * 
-	 * colums keys: i1.0,i1.1
-	 * row keys:    i2.0,i2.1
-	 *
-	 * 
-	 * examples:
-	 * 
-	 * AND: genEncryptedLut(0,0,0,1,i1,i2,r)
-	 * XOR: genEncryptedlut(0,1,1,0,i1,i2,r)
-	 *  OR: genEncryptedlut(0,1,1,1,i1,i2,r)
-	 * 
-	 * each entry is encrypted with its column- and row-key (in that
-	 * order):
-	 * 
-	 * lut[0]=encrypt(encrypt(entry,key_i1.0),key_i2.0)
-	 * lut[1]=encrypt(encrypt(entry,key_i1.1),key_i2.0)
-	 * lut[2]=encrypt(encrypt(entry,key_i1.0),key_i2.1)
-	 * lut[3]=encrypt(encrypt(entry,key_i1.1),key_i2.1)
-	 * 
-	 */
 	void genEncryptedLut(int i00,int i01,int i10,int i11,Wire i1, Wire i2, Wire r) throws Exception
 	{	
 		//encrypt

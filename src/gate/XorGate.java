@@ -1,4 +1,4 @@
-package yao.gate;
+package gate;
 
 
 public class XorGate extends Gate
