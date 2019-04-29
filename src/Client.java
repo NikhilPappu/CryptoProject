@@ -60,13 +60,6 @@ public class Client
             lut[5]=lut_g6;
             lut[6]=lut_g7;
             lut[7]=lut_g8;
-
-            for(int j=0;j<8;j++){
-                for(int i=0; i<4; i++){
-                String s1= br.readLine();
-                lut[j][i] = Utils.hextoByte(s1);
-                }
-            }
             
             String s_in_a1 = br.readLine();
             String s_in_a2 = br.readLine();
@@ -83,6 +76,13 @@ public class Client
             String rh1 = br.readLine();
 
 
+            for(int j=0;j<8;j++){
+                for(int i=0; i<4; i++){
+                String s1= br.readLine();
+                lut[j][i] = Utils.hextoByte(s1);
+                }
+            }
+
             Gate gate1=new Gate(lut_g1);
             Gate gate2=new Gate(lut_g2);
             Gate gate3=new Gate(lut_g3);
@@ -92,42 +92,40 @@ public class Client
             Gate gate7=new Gate(lut_g7);
             Gate gate8=new Gate(lut_g8);    
 
-            // byte[] ra=gate1.operate(Utils.hextoByte(s_in_a1), Utils.hextoByte(s_in_b1));
-            // byte[] rb=gate2.operate(Utils.hextoByte(s_in_a2), Utils.hextoByte(s_in_b1));
-            // byte[] rc=gate3.operate(Utils.hextoByte(s_in_a1), Utils.hextoByte(s_in_b2));
-            // byte[] rd=gate4.operate(Utils.hextoByte(s_in_a2), Utils.hextoByte(s_in_b2));
-            //System.out.println(Utils.getHex(ra));
-            
-            //byte[] re=gate5.operate(rb, rc);
-            // byte[] rf=gate6.operate(rb, rc);
-            // byte[] rg=gate7.operate(rf, rd);
-            // byte[] rh=gate8.operate(rf, rd);
+            byte[] ra=gate1.operate(Utils.hextoByte(s_in_b1), Utils.hextoByte(s_in_a1));
+            byte[] rb=gate2.operate(Utils.hextoByte(s_in_b1), Utils.hextoByte(s_in_a2));
+            byte[] rc=gate3.operate(Utils.hextoByte(s_in_b2), Utils.hextoByte(s_in_a1));
+            byte[] rd=gate4.operate(Utils.hextoByte(s_in_b2), Utils.hextoByte(s_in_a2));
+            byte[] re=gate5.operate(rc, rb);
+            byte[] rf=gate6.operate(rc, rb);
+            byte[] rg=gate7.operate(rd, rf);
+            byte[] rh=gate8.operate(rd, rf);
       
       
-            // if (Utils.getHex(ra).equals(ra0)){
-            //     System.out.print("0");
-            // }
-            // else if (Utils.getHex(ra).equals(ra1)){
-            //     System.out.print("1");
-            // }
-            // if (Utils.getHex(re).equals(re0)){
-            //     System.out.print("0");
-            // }
-            // else if (Utils.getHex(re).equals(re1)){
-            //     System.out.print("1");
-            // }
-            // if (Utils.getHex(rg).equals(rg0)){
-            //     System.out.print("0");
-            // }
-            // else if (Utils.getHex(rg).equals(rg1)){
-            //     System.out.print("1");
-            // }
-            // if (Utils.getHex(rh).equals(rh0)){
-            //     System.out.print("0");
-            // }
-            // else if (Utils.getHex(rh).equals(rh1)){
-            //     System.out.print("1");
-            // }
+            if (Utils.getHex(rh).equals(rh0)){
+                System.out.print("0");
+            }
+            else if (Utils.getHex(ra).equals(rh1)){
+                System.out.print("1");
+            }
+            if (Utils.getHex(rg).equals(rg0)){
+                System.out.print("0");
+            }
+            else if (Utils.getHex(rg).equals(rg1)){
+                System.out.print("1");
+            }
+            if (Utils.getHex(re).equals(re0)){
+                System.out.print("0");
+            }
+            else if (Utils.getHex(re).equals(re1)){
+                System.out.print("1");
+            }
+            if (Utils.getHex(ra).equals(ra0)){
+                System.out.print("0");
+            }
+            else if (Utils.getHex(ra).equals(ra1)){
+                System.out.print("1");
+            }
             
         }
         catch (Exception exception)
