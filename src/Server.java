@@ -8,6 +8,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 
 public class Server
 {
@@ -44,11 +47,15 @@ public class Server
 		byte[][] lut_g5=g5.getLut();
         byte[][] lut_g6=g6.getLut();
         byte[][] lut_g7=g7.getLut();
-		byte[][] lut_g8=g8.getLut();
-		byte[] in_a1=a1.getValue1();
-		byte[] in_a2=a2.getValue1();
-		byte[] in_b1=b1.getValue0();
+        byte[][] lut_g8=g8.getLut();
+
+        //-------Inputs------------
+        byte[] in_a2=a2.getValue1();
+        byte[] in_a1=a1.getValue1();
         byte[] in_b2=b2.getValue1();
+		byte[] in_b1=b1.getValue0();
+        //-------------------------
+
         byte[][][] lut=new byte[8][][];
         lut[0]=lut_g1;
         lut[1]=lut_g2;
@@ -79,25 +86,36 @@ public class Server
                 InputStream is = socket.getInputStream();
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader br = new BufferedReader(isr);
-                String number = br.readLine();
-               // System.out.println("Message received from client is "+number);
- 
-                String returnMessage;
-                try
-                {
-                    int numberInIntFormat = Integer.parseInt(number);
-                    int returnValue = numberInIntFormat*2;
-                    returnMessage = String.valueOf(returnValue) + "\n";
-                }
-                catch(NumberFormatException e)
-                {
-                    returnMessage = "Please send a proper number\n";
-                }
+                String publicKey1 = br.readLine();
+                String publicKey2 = br.readLine();
+
+                String publicKey3 = br.readLine();
+                String publicKey4 = br.readLine();
+
+                PublicKey pk1 = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Utils.hextoByte(publicKey1)));
+                PublicKey pk2 = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Utils.hextoByte(publicKey2)));
+
+                PublicKey pk3 = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Utils.hextoByte(publicKey3)));
+                PublicKey pk4 = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Utils.hextoByte(publicKey4)));
+
+                byte[] cipher1=Utils.RSAencrypt(b1.getValue0(), pk1);
+                byte[] cipher2=Utils.RSAencrypt(b1.getValue1(), pk2);
+
+                byte[] cipher3=Utils.RSAencrypt(b2.getValue0(), pk3);
+                byte[] cipher4=Utils.RSAencrypt(b2.getValue1(), pk4);
+                
+
  
                 //Sending the response back to the client.
                 OutputStream os = socket.getOutputStream();
                 OutputStreamWriter osw = new OutputStreamWriter(os);
                 BufferedWriter bw = new BufferedWriter(osw);
+                
+                bw.write(Utils.getHex(cipher1) + "\n");
+                bw.write(Utils.getHex(cipher2) + "\n");
+                bw.write(Utils.getHex(cipher3) + "\n");
+                bw.write(Utils.getHex(cipher4) + "\n");
+
 
                 String ra0 = Utils.getHex(ra.getValue0());
                 String ra1 = Utils.getHex(ra.getValue1());
@@ -110,8 +128,6 @@ public class Server
                 
                 bw.write(s_in_a1 + "\n");
                 bw.write(s_in_a2 + "\n");
-                bw.write(s_in_b1 + "\n");
-                bw.write(s_in_b2 + "\n");
                 
                 bw.write(ra0 + "\n");
                 bw.write(ra1 + "\n");

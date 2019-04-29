@@ -6,6 +6,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.util.Base64;
 
 import gate.*; 
 
@@ -32,7 +36,36 @@ public class Client
             String number = "2";
  
             String sendMessage = number + "\n";
-            bw.write(sendMessage);
+            
+            System.out.println();    
+            KeyPair kp = Utils.genRSAkeypair();
+            PrivateKey sk = kp.getPrivate();
+            Key pk = kp.getPublic();
+            Key pk2 = Utils.genRSAkeypair().getPublic();
+            
+            byte [] pkBytes = pk.getEncoded();
+            byte [] pkBytes2 = pk2.getEncoded();
+
+            String pks = Utils.getHex(pkBytes);
+            String pks2 = Utils.getHex(pkBytes2);
+            
+            bw.write(pks  + "\n"); // b = 0
+            bw.write(pks2  + "\n");
+
+            KeyPair kp2 = Utils.genRSAkeypair();
+            PrivateKey sk2 = kp2.getPrivate();
+            Key pkk = kp2.getPublic();
+            Key pkk2 = Utils.genRSAkeypair().getPublic();
+            
+            byte [] pkkBytes = pkk.getEncoded();
+            byte [] pkkBytes2 = pkk2.getEncoded();
+
+            String pkks = Utils.getHex(pkkBytes);
+            String pkks2 = Utils.getHex(pkkBytes2);
+            
+            bw.write(pkks2  + "\n"); // b = 1
+            bw.write(pkks  + "\n");
+
             bw.flush();
            // System.out.println("Message sent to the server : "+sendMessage);
  
@@ -59,11 +92,18 @@ public class Client
             lut[5]=lut_g6;
             lut[6]=lut_g7;
             lut[7]=lut_g8;
+
+            String cipher1 = br.readLine();
+            String cipher2 = br.readLine();
+
+            String cipher3 = br.readLine();
+            String cipher4 = br.readLine();
             
+
             String s_in_a1 = br.readLine();
             String s_in_a2 = br.readLine();
-            String s_in_b1 = br.readLine();
-            String s_in_b2 = br.readLine();
+            String s_in_b1 = Utils.getHex(Utils.RSAdecrypt(Utils.hextoByte(cipher1), sk));
+            String s_in_b2 = Utils.getHex(Utils.RSAdecrypt(Utils.hextoByte(cipher4), sk2));
     
             String ra0 = br.readLine();
             String ra1 = br.readLine();
@@ -125,15 +165,6 @@ public class Client
             else if (Utils.getHex(ra).equals(ra1)){
                 System.out.print("1");
             }
-        
-            
-		    // KeyPair kp = Utils.genRSAkeyPair();
-            // byte[] secret=new byte[]{0x12,0x34,0x56,0x78};
-            // byte[] cipher=Utils.RSAencrypt(secret, kp.getPublic());
-            // System.out.println("RSA encrypted="+Utils.getHex(cipher));
-            // secret=Utils.RSAdecrypt(cipher, kp.getPrivate());
-            // System.out.println("RSA decrypted="+Utils.getHex(secret));
-
 
         }
         catch (Exception exception)
