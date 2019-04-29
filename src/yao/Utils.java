@@ -44,6 +44,21 @@ public class Utils
 		return result;
 	}
 	
+		public static byte[] hextoByte(String s) throws Exception {
+		   
+		   byte[] val = new byte[s.length() / 2];
+		   for (int i = 0; i < val.length; i++) {
+			  int index = i * 2;
+			  int j = Integer.parseInt(s.substring(index, index + 2), 16);
+			  val[i] = (byte) j;
+		   }
+		   return val;
+		}
+	 
+		
+	 
+	
+	
 	public static boolean arraysAreEqual(byte[] a,byte[] b)
 	{
 		if(a.length!=b.length)

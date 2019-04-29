@@ -1,0 +1,150 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+
+import yao.Utils;
+import yao.gate.*; 
+
+
+public class Client
+{
+ 
+    private static Socket socket;
+ 
+    public static void main(String args[])
+    {
+        try
+        {
+            String host = "localhost";
+            int port = 25000;
+            InetAddress address = InetAddress.getByName(host);
+            socket = new Socket(address, port);
+ 
+            //Send the message to the server
+            OutputStream os = socket.getOutputStream();
+            OutputStreamWriter osw = new OutputStreamWriter(os);
+            BufferedWriter bw = new BufferedWriter(osw);
+ 
+            String number = "2";
+ 
+            String sendMessage = number + "\n";
+            bw.write(sendMessage);
+            bw.flush();
+           // System.out.println("Message sent to the server : "+sendMessage);
+ 
+            //Get the return message from the server
+            InputStream is = socket.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+            byte[][] lut_g1= new byte [4][];
+		    byte[][] lut_g2= new byte [4][];
+            byte[][] lut_g3= new byte [4][];
+            byte[][] lut_g4= new byte [4][];
+		    byte[][] lut_g5= new byte [4][];
+            byte[][] lut_g6= new byte [4][];
+            byte[][] lut_g7= new byte [4][];
+		    byte[][] lut_g8= new byte [4][];
+            byte[][][] lut=new byte[8][][];
+
+            lut[0]=lut_g1;
+            lut[1]=lut_g2;
+            lut[2]=lut_g3;
+            lut[3]=lut_g4;
+            lut[4]=lut_g5;
+            lut[5]=lut_g6;
+            lut[6]=lut_g7;
+            lut[7]=lut_g8;
+
+            String s_in_a1 = br.readLine();
+       //   System.out.println("Message received from the server : " + s_in_a1);
+            String s_in_a2 = br.readLine();
+       //   System.out.println("Message received from the server : " + s_in_a2);
+            String s_in_b1 = br.readLine();
+       //   System.out.println("Message received from the server : " + s_in_b1);
+            String s_in_b2 = br.readLine();
+       //   System.out.println("Message received from the server : " + s_in_b2);
+
+            String ra0 = br.readLine();
+            String ra1 = br.readLine();
+            String re0 = br.readLine();
+            String re1 = br.readLine();
+            String rg0 = br.readLine();
+            String rg1 = br.readLine();
+            String rh0 = br.readLine();
+            String rh1 = br.readLine();
+
+            for(int j=0;j<8;j++){
+                for(int i=0; i<4; i++){
+                String s1= br.readLine();
+                lut[j][i] = Utils.hextoByte(s1);
+                }
+            }
+            
+            Gate gate1=new Gate(lut_g1);
+            Gate gate2=new Gate(lut_g2);
+            Gate gate3=new Gate(lut_g3);
+            Gate gate4=new Gate(lut_g4);
+            Gate gate5=new Gate(lut_g5);
+            Gate gate6=new Gate(lut_g6);
+            Gate gate7=new Gate(lut_g7);
+            Gate gate8=new Gate(lut_g8);
+            
+            byte[] ra=gate1.operate(Utils.hextoByte(s_in_a1), Utils.hextoByte(s_in_b1));
+            byte[] rb=gate2.operate(Utils.hextoByte(s_in_a2), Utils.hextoByte(s_in_b1));
+            byte[] rc=gate3.operate(Utils.hextoByte(s_in_a1), Utils.hextoByte(s_in_b2));
+            byte[] rd=gate4.operate(Utils.hextoByte(s_in_a2), Utils.hextoByte(s_in_b2));
+            byte[] re=gate5.operate(rb, rc);
+            byte[] rf=gate6.operate(rb, rc);
+            byte[] rg=gate7.operate(rf, rd);
+            byte[] rh=gate8.operate(rf, rd);
+      
+      
+            if (Utils.getHex(ra).equals(ra0)){
+                System.out.print("0");
+            }
+            else if (Utils.getHex(ra).equals(ra1)){
+                System.out.print("1");
+            }
+            if (Utils.getHex(re).equals(re0)){
+                System.out.print("0");
+            }
+            else if (Utils.getHex(re).equals(re1)){
+                System.out.print("1");
+            }
+            if (Utils.getHex(rg).equals(rg0)){
+                System.out.print("0");
+            }
+            else if (Utils.getHex(rg).equals(rg1)){
+                System.out.print("1");
+            }
+            if (Utils.getHex(rh).equals(rh0)){
+                System.out.print("0");
+            }
+            else if (Utils.getHex(rh).equals(rh1)){
+                System.out.print("1");
+            }
+            
+        }
+        catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
+        finally
+        {
+            //Closing the socket
+            try
+            {
+                socket.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+}
