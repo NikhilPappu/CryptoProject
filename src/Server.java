@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Scanner;
 
 public class Server
 {
@@ -49,11 +50,24 @@ public class Server
         byte[][] lut_g7=g7.getLut();
         byte[][] lut_g8=g8.getLut();
 
+        byte[] in_a2 = {0x12, 0x12}, in_a1 = {0x12, 0x12};
         //-------Inputs------------
-        byte[] in_a2=a2.getValue1();
-        byte[] in_a1=a1.getValue1();
-        byte[] in_b2=b2.getValue1();
-		byte[] in_b1=b1.getValue0();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter a2:");
+        int a2_in = sc.nextInt();
+        System.out.println("Enter a1:");
+        int a1_in = sc.nextInt();
+
+        if(a2_in == 0)
+            in_a2 = a2.getValue0();
+        else if(a2_in == 1)
+            in_a2 = a2.getValue1();
+
+        if(a1_in == 0)
+           in_a1 = a1.getValue0();
+        else if(a1_in == 1)
+            in_a1 = a1.getValue1();
+
         //-------------------------
 
         byte[][][] lut=new byte[8][][];
@@ -69,8 +83,6 @@ public class Server
 
 		String s_in_a1 = Utils.getHex(in_a1);
         String s_in_a2 = Utils.getHex(in_a2);
-        String s_in_b1 = Utils.getHex(in_b1);
-        String s_in_b2 = Utils.getHex(in_b2);
 
         try
         {

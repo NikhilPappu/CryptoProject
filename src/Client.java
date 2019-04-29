@@ -10,6 +10,7 @@ import java.security.Key;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.util.Base64;
+import java.util.Scanner;
 
 import gate.*; 
 
@@ -27,7 +28,13 @@ public class Client
             int port = 25000;
             InetAddress address = InetAddress.getByName(host);
             socket = new Socket(address, port);
- 
+
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter b2:");
+            int b2_in = sc.nextInt();
+            System.out.println("Enter b1:");
+            int b1_in = sc.nextInt();
+
             //Send the message to the server
             OutputStream os = socket.getOutputStream();
             OutputStreamWriter osw = new OutputStreamWriter(os);
@@ -49,9 +56,14 @@ public class Client
             String pks = Utils.getHex(pkBytes);
             String pks2 = Utils.getHex(pkBytes2);
             
-            bw.write(pks  + "\n"); // b = 0
-            bw.write(pks2  + "\n");
-
+            if(b1_in == 0){
+                bw.write(pks  + "\n"); // b = 0
+                bw.write(pks2  + "\n");
+            }
+            else if(b1_in == 1){
+                bw.write(pks2  + "\n"); // b = 1
+                bw.write(pks  + "\n");
+            }
             KeyPair kp2 = Utils.genRSAkeypair();
             PrivateKey sk2 = kp2.getPrivate();
             Key pkk = kp2.getPublic();
@@ -63,8 +75,14 @@ public class Client
             String pkks = Utils.getHex(pkkBytes);
             String pkks2 = Utils.getHex(pkkBytes2);
             
-            bw.write(pkks2  + "\n"); // b = 1
-            bw.write(pkks  + "\n");
+            if(b2_in == 0){
+                bw.write(pkks  + "\n"); // b = 0
+                bw.write(pkks2  + "\n");
+            }
+            else if(b2_in == 1){
+                bw.write(pkks2  + "\n"); // b = 1
+                bw.write(pkks  + "\n");
+            }
 
             bw.flush();
            // System.out.println("Message sent to the server : "+sendMessage);
@@ -95,15 +113,27 @@ public class Client
 
             String cipher1 = br.readLine();
             String cipher2 = br.readLine();
-
+            String cipher_b1 = "";
+            if(b1_in == 0){
+               cipher_b1 = cipher1;
+            }
+            else if(b1_in == 1){
+                cipher_b1 = cipher2;
+            }
             String cipher3 = br.readLine();
             String cipher4 = br.readLine();
-            
+            String cipher_b2 = "";
+            if(b2_in == 0){
+                cipher_b2 = cipher3;
+             }
+             else if(b2_in == 1){
+                 cipher_b2 = cipher4;
+             }
 
             String s_in_a1 = br.readLine();
             String s_in_a2 = br.readLine();
-            String s_in_b1 = Utils.getHex(Utils.RSAdecrypt(Utils.hextoByte(cipher1), sk));
-            String s_in_b2 = Utils.getHex(Utils.RSAdecrypt(Utils.hextoByte(cipher4), sk2));
+            String s_in_b1 = Utils.getHex(Utils.RSAdecrypt(Utils.hextoByte(cipher_b1), sk));
+            String s_in_b2 = Utils.getHex(Utils.RSAdecrypt(Utils.hextoByte(cipher_b2), sk2));
     
             String ra0 = br.readLine();
             String ra1 = br.readLine();
@@ -144,7 +174,7 @@ public class Client
             if (Utils.getHex(rh).equals(rh0)){
                 System.out.print("0");
             }
-            else if (Utils.getHex(ra).equals(rh1)){
+            else if (Utils.getHex(rh).equals(rh1)){
                 System.out.print("1");
             }
             if (Utils.getHex(rg).equals(rg0)){
