@@ -35,8 +35,17 @@ public class Wire
 		return value[0];
 	}
 	
+	public void setValue0(byte [] val){
+		value[0] = val;
+	}
+
+
 	public byte[] getValue1()
 	{
 		return value[1];
+	}
+
+	public void setValue1(byte [] val){
+		value[1] = val;
 	}
 }

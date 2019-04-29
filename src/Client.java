@@ -91,14 +91,14 @@ public class Client
             InputStream is = socket.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
-            byte[][] lut_g1= new byte [4][];
-		    byte[][] lut_g2= new byte [4][];
-            byte[][] lut_g3= new byte [4][];
-            byte[][] lut_g4= new byte [4][];
-		    byte[][] lut_g5= new byte [4][];
-            byte[][] lut_g6= new byte [4][];
-            byte[][] lut_g7= new byte [4][];
-		    byte[][] lut_g8= new byte [4][];
+            byte[][] lut_g1= new byte [3][];
+		    byte[][] lut_g2= new byte [3][];
+            byte[][] lut_g3= new byte [3][];
+            byte[][] lut_g4= new byte [3][];
+		    byte[][] lut_g5= new byte [3][];
+            byte[][] lut_g6= new byte [3][];
+            byte[][] lut_g7= new byte [3][];
+		    byte[][] lut_g8= new byte [3][];
             byte[][][] lut=new byte[8][][];
             
             
@@ -146,7 +146,7 @@ public class Client
 
 
             for(int j=0;j<8;j++){
-                for(int i=0; i<4; i++){
+                for(int i=0; i<3; i++){
                 String s1= br.readLine();
                 lut[j][i] = Utils.hextoByte(s1);
                 }

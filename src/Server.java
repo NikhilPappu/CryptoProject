@@ -151,7 +151,7 @@ public class Server
                 bw.write(rh1 + "\n");
 
                 for(int j=0;j<8;j++){
-                for(int i=0;i<4;i++){
+                for(int i=0;i<3;i++){
                     String s1=Utils.getHex(lut[j][i]);
                     bw.write(s1 + "\n");
                 }

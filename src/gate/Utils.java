@@ -24,7 +24,7 @@ public class Utils
 	public static void printLut(Gate gate,String title)
 	{
 		System.out.println(title);
-		for(int i=0;i<4;i++)
+		for(int i=0;i<3;i++)
 		{
 			System.out.println(getHex(gate.getLutEntry(i)));
 		}
@@ -137,7 +137,7 @@ public class Utils
 		
 		for(int i=0;i<10000;i++)
 		{
-			for(int j=0;j<4;j++)
+			for(int j=0;j<3;j++)
 			{
 				Utils.AESdecrypt(gate1.getLutEntry(0),in_a2);
 				Utils.AESdecrypt(gate1.getLutEntry(0),in_a2);
@@ -150,7 +150,7 @@ public class Utils
 		
 		for(int i=0;i<10000;i++)
 		{
-			for(int j=0;j<4;j++)
+			for(int j=0;j<3;j++)
 			{
 				Utils.AESencrypt(gate1.getLutEntry(0),in_a2);
 				Utils.AESencrypt(gate1.getLutEntry(0),in_a2);
@@ -164,7 +164,7 @@ public class Utils
 		
 		for(int i=0;i<10000;i++)
 		{
-			for(int j=0;j<4;j++)
+			for(int j=0;j<3;j++)
 			{
 				md.reset();
 				md.update(in_a1);
